@@ -28,6 +28,7 @@ function Base.getproperty(o::C, s::Symbol) where {C<:CasadiSymbolicObject}
     end
 end
 
+SX(x::T) where {T<:Irrational} = pyconvert(SX, casadi.SX(float(x)))
 SX(x::T) where {T<:Number} = pyconvert(SX, casadi.SX(x))
 SX(x::AbstractVecOrMat{SX}) = convert(SX, x)
 SX(x::AbstractVecOrMat{T}) where {T<:Number} = pyconvert(SX, casadi.SX(_tonparr(x)))
@@ -36,11 +37,13 @@ SX(x::AbstractString, i1::Integer) = pyconvert(SX, casadi.SX.sym(x, i1))
 SX(x::AbstractString, i1::Integer, i2::Integer) = pyconvert(SX, casadi.SX.sym(x, i1, i2))
 SX(i1::Integer, i2::Integer) = pyconvert(SX, casadi.SX(i1, i2))
 
+DM(x::T) where {T<:Irrational} = pyconvert(SX, casadi.DM(float(x)))
 DM(x::T) where {T<:Number} = pyconvert(DM, casadi.DM(x))
 DM(x::AbstractVecOrMat{DM}) = convert(DM, x)
 DM(x::AbstractVecOrMat{T}) where {T<:Number} = pyconvert(DM, casadi.DM(_tonparr(x)))
 DM(i1::Integer, i2::Integer) = pyconvert(DM, casadi.DM(i1, i2))
 
+MX(x::T) where {T<:Irrational} = pyconvert(MX, casadi.MX(float(x)))
 MX(x::T) where {T<:Number} = pyconvert(MX, casadi.MX(x))
 MX(x::AbstractVecOrMat{MX}) = convert(MX, x)
 MX(x::AbstractVecOrMat{T}) where {T<:Number} = pyconvert(MX, casadi.MX(_tonparr(x)))

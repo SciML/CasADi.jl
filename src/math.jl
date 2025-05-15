@@ -23,19 +23,21 @@ end
 # NaNMath
 
 ## Binary operations
-+(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.plus(x, y))
--(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.minus(x, y))
-/(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.mrdivide(x, y))
-^(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.power(x, y))
-^(x::C, y::Integer) where {C<:CasadiSymbolicObject} = C(casadi.power(x, y))
-\(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.solve(x, y))
-×(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.cross(x, y))
++(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.plus(x, _float_if_irrational(y)))
+-(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.minus(x, _float_if_irrational(y)))
+/(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.mrdivide(x, _float_if_irrational(y)))
+^(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.power(x, _float_if_irrational(y)))
+^(x::C, y::Integer) where {C<:CasadiSymbolicObject} = C(casadi.power(x, _float_if_irrational(y)))
+\(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.solve(x, _float_if_irrational(y)))
+×(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.cross(x, _float_if_irrational(y)))
+
+_float_if_irrational(x::Real) = x isa Irrational ? float(x) : x
 
 function *(x::C, y::Real) where {C<:CasadiSymbolicObject}
     v = if size(x, 2) == size(y, 1)
-        casadi.mtimes(x, y)
+        casadi.mtimes(x, _float_if_irrational(y))
     else
-        casadi.times(x, y)
+        casadi.times(x, _float_if_irrational(y))
     end
     C(v)
 end
@@ -43,11 +45,11 @@ end
 *(x::AbstractArray{<:Real}, y::C) where {C <: CasadiSymbolicObject} = C(x) * y
 *(x::C, y::AbstractArray{<:Real}) where {C <: CasadiSymbolicObject} = x * C(y)
 
->=(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.ge(x, y))
->(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.gt(x, y))
-<=(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.le(x, y))
-<(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.lt(x, y))
-==(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.eq(x, y))
+>=(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.ge(x, _float_if_irrational(y)))
+>(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.gt(x, _float_if_irrational(y)))
+<=(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.le(x, _float_if_irrational(y)))
+<(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.lt(x, _float_if_irrational(y)))
+==(x::C, y::Real) where {C<:CasadiSymbolicObject} = C(casadi.eq(x, _float_if_irrational(y)))
 
 Base.isequal(x::C, y::C) where {C<:CasadiSymbolicObject} = pyconvert(Bool, casadi.is_equal(x,y))
 Base.iszero(x::C) where {C <: CasadiSymbolicObject} = pyconvert(Bool, x.x.is_zero())
