@@ -1,7 +1,7 @@
 name = "CasADi"
 uuid = "c49709b8-5c63-11e9-2fb2-69db5844192f"
 authors = ["Iordanis Chatzinikolaidis <ch.iordanis@outlook.com>", "Vincent Du <vincent.duyuan@gmail.com>"]
-version = "1.0.6"
+version = "1.0.7"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
