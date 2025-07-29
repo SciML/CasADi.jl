@@ -1,4 +1,4 @@
-function test_mathfuns(::Type{T}) where {T<:CasadiSymbolicObject}
+function test_mathfuns(::Type{T}) where {T <: CasadiSymbolicObject}
     @testset "$( string("Math functions for ", T, "                            ") )" begin
         x = randn()
 
