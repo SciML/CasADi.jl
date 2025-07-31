@@ -34,12 +34,11 @@ Solve a casadi problem, returns a Julia dictionary.
 """
 function solve(solver::CasadiFunction; x0::Vector = error("Must provide x0."))
     psol = solver.py(x0 = x0)
-    sol = pyconvert(Dict, psol) 
+    sol = pyconvert(Dict, psol)
     jsol = Dict()
-    for (k,v) in sol
+    for (k, v) in sol
         val = sol[k]
         jsol[k] = to_julia(DM(Py(val)))
     end
     jsol
 end
-

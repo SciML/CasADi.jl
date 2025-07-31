@@ -1,6 +1,6 @@
 J = b -> pyconvert(Bool, b)
 
-function test_generic(::Type{T}) where {T<:CasadiSymbolicObject}
+function test_generic(::Type{T}) where {T <: CasadiSymbolicObject}
     @testset "$( string("Transform ", T, " to null, scalar, Vector, and Matrix ") )" begin
         null_symbol = T("null_symbol", 0)
         scalar = T("scalar", 1)
@@ -156,7 +156,7 @@ function test_generic(::Type{T}) where {T<:CasadiSymbolicObject}
         @test size(ones(T, 4, 5), 2) == 5
         @test_throws DimensionMismatch("arraysize: dimension out of range") size(
             zeros(T, 3, 3),
-            3,
+            3
         )
     end
 
@@ -214,7 +214,7 @@ function test_generic(::Type{T}) where {T<:CasadiSymbolicObject}
         B = SX(4, 4)
         C = Matrix(A * B)
         D = Matrix(B * A')
-        @test isequal(SX(C), SX(zeros(3,4)))
-        @test isequal(SX(D), SX(zeros(4,3)))
+        @test isequal(SX(C), SX(zeros(3, 4)))
+        @test isequal(SX(D), SX(zeros(4, 3)))
     end
 end

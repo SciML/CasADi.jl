@@ -36,7 +36,7 @@ end
         "S",
         "ipopt",
         nlp,
-        Dict("ipopt" => Dict(["print_level" => 0]), "verbose" => false),
+        Dict("ipopt" => Dict(["print_level" => 0]), "verbose" => false)
     )
 
     sol = solve(S, x0 = [0, 0])

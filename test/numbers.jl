@@ -1,4 +1,4 @@
-function test_numbers(::Type{T}) where {T<:CasadiSymbolicObject}
+function test_numbers(::Type{T}) where {T <: CasadiSymbolicObject}
     @testset "$( string("Conversion of numeric ", T, " to Julia                ") )" begin
         x₁ = rand()
         x₂ = rand(3)
