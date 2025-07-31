@@ -14,15 +14,15 @@ function variable!(opti::Opti, dims...)
     MX(opti.py._variable(dims...))
 end
 
-function parameter!(opti::Opti, dims...) 
+function parameter!(opti::Opti, dims...)
     MX(opti.py._parameter(dims...))
 end
 
-function set_value!(opti::Opti, p::MX, val) 
+function set_value!(opti::Opti, p::MX, val)
     opti.py.set_value(p, val)
 end
 
-function set_initial!(opti::Opti, x::MX, val) 
+function set_initial!(opti::Opti, x::MX, val)
     opti.py.set_initial(x, val)
 end
 
@@ -30,7 +30,7 @@ function subject_to!(opti::Opti, expr::MX)
     opti.py._subject_to(expr)
 end
 
-function minimize!(opti::Opti, expr::MX) 
+function minimize!(opti::Opti, expr::MX)
     opti.py.minimize(expr)
 end
 
@@ -41,12 +41,12 @@ function solver!(opti::Opti, solver::String, plugin_options::Dict = Dict(), solv
     opti.py.solver(solver, PyDict(plugin_options), PyDict(solver_options))
 end
 
-function solve!(opti::Opti) 
+function solve!(opti::Opti)
     psol = opti.py.solve()
     OptiSol(psol)
 end
 
-function value(sol::OptiSol, expr::MX) 
+function value(sol::OptiSol, expr::MX)
     vals = pyconvert(Any, sol.py.value(expr))
     to_julia(MX(vals))
 end
@@ -56,11 +56,11 @@ function debug_value(opti::Opti, expr::MX)
     to_julia(MX(vals))
 end
 
-function return_status(opti::Opti) 
+function return_status(opti::Opti)
     pyconvert(String, opti.py.return_status())
 end
 
-function Base.copy(opti::Opti) 
+function Base.copy(opti::Opti)
     Opti(opti.py.copy())
 end
 

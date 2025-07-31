@@ -27,7 +27,7 @@ y = SX("y")
 b = 100
 f = (α - x)^2 + b*(y - x^2)^2
 
-nlp = Dict("x" => vcat([x ; y]), "f" => f);
+nlp = Dict("x" => vcat([x; y]), "f" => f);
 S = nlpsol("S", "ipopt", nlp);
 
 sol = solve(S, x0 = [0, 0]);
@@ -38,6 +38,7 @@ println("Optimal solution: x = ", sol["x"][1], ", y = ", sol["x"][2])
 ## Example: Using Opti stack
 
 We will use Opti stack to solve the example problem in CasADi's documentation
+
 ```julia
 using CasADi
 
