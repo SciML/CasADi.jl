@@ -11,7 +11,7 @@ SymbolicUtils = "d1185830-fcd6-423d-90d6-eec64667417b"
 [compat]
 PythonCall = "0.9.24"
 Suppressor = "0.2"
-SymbolicUtils = "3.27.0"
+SymbolicUtils = "3.27.0, 4.3"
 julia = "1.6.1"
 
 [extras]
