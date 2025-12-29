@@ -59,3 +59,4 @@ println("Optimal solution: x = ", sol.value(x), ", y = ", sol.value(y))
 ## Acknowledgments
 
 This package is built almost entirely off of code written by Iordanis Chatzinikolaidis. Many thanks to his implementation. The purpose of this package is to register it publicly.
+
