@@ -62,16 +62,14 @@ convert(::Type{Py}, s::CasadiSymbolicObject) = s.x
 Convert a numeric CasADi value to a numeric Julia value.
 """
 function to_julia(x::CasadiSymbolicObject)
-    vals = pyconvert(Vector, casadi.evalf(x).toarray())
-    vals = reduce(vcat, vals; init = zeros(0))
-
-    if size(x) == (1, 1)
-        return pyconvert(Float64, vals[1][1])
-    elseif size(x, 2) == 1
-        return pyconvert(Vector{Float64}, vals)
+    mat = pyconvert(Matrix{Float64}, casadi.evalf(x).full())
+    m, n = Base.size(mat)
+    if m == 1 && n == 1
+        return mat[1, 1]
+    elseif n == 1
+        return vec(mat)
     else
-        i, j = size(x)
-        vals = permutedims(reshape(vals, (j, i)))
+        return mat
     end
 end
 

@@ -1,7 +1,16 @@
 ## Indexing
-function Base.getindex(x::T, j::Union{
-        Int, UnitRange{Int}, Colon}) where {T <: CasadiSymbolicObject}
+# Optimized single Int index - avoids intermediate range allocation
+function Base.getindex(x::T, j::Int) where {T <: CasadiSymbolicObject}
+    T(pygetitem(x.x, j - 1))
+end
+
+function Base.getindex(x::T, j::Union{UnitRange{Int}, Colon}) where {T <: CasadiSymbolicObject}
     T(pygetitem(x.x, (1:length(x))[j] .- 1))
+end
+
+# Optimized 2D Int indexing
+function Base.getindex(x::T, j1::Int, j2::Int) where {T <: CasadiSymbolicObject}
+    T(pygetitem(x.x, (j1 - 1, j2 - 1)))
 end
 
 function Base.getindex(x::T, j1::Union{Int, UnitRange{Int}, Colon},
@@ -68,7 +77,7 @@ function Base.zeros(::Type{C}, j1::Integer, j2::Integer) where {C <: CasadiSymbo
 end
 
 ## Size related operations
-Base.size(x::CasadiSymbolicObject) = pyconvert(Tuple, x.size())
+Base.size(x::CasadiSymbolicObject) = (pyconvert(Int, x.x.size1()), pyconvert(Int, x.x.size2()))
 
 function Base.size(x::C, j::Integer) where {C <: CasadiSymbolicObject}
     if j == 1
