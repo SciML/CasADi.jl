@@ -1,5 +1,5 @@
 function test_mathfuns(::Type{T}) where {T <: CasadiSymbolicObject}
-    @testset "$( string("Math functions for ", T, "                            ") )" begin
+    return @testset "$(string("Math functions for ", T, "                            "))" begin
         x = randn()
 
         @test all(to_julia.(sincos(T(x))) .≈ sincos(x))

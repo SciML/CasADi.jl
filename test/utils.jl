@@ -1,7 +1,7 @@
 J = b -> pyconvert(Bool, b)
 
 function test_utils(::Type{T}) where {T <: CasadiSymbolicObject}
-    @testset "$( string("Function 'substitute' for ", T, "                     ") )" begin
+    return @testset "$(string("Function 'substitute' for ", T, "                     "))" begin
         x = T("x")
         y = T("y")
         z = T("z")

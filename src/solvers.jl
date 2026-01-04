@@ -9,7 +9,7 @@ function nlpsol(name::String, solver::String, var_dict::Dict, solver_options::Di
     for (k, v) in solver_options
         v isa Dict && (solver_options[k] = PyDict(v))
     end
-    CasadiFunction(casadi.nlpsol(name, solver, PyDict(var_dict), PyDict(solver_options)))
+    return CasadiFunction(casadi.nlpsol(name, solver, PyDict(var_dict), PyDict(solver_options)))
 end
 
 """
@@ -19,14 +19,14 @@ function qpsol(name::String, solver::String, vardict::Dict, solver_options::Dict
     for (k, v) in solver_options
         v isa Dict && (solver_options[k] = PyDict(v))
     end
-    CasadiFunction(casadi.qpsol(name, solver, PyDict(var_dict), PyDict(solver_options)))
+    return CasadiFunction(casadi.qpsol(name, solver, PyDict(var_dict), PyDict(solver_options)))
 end
 
 """
 casadi.integrator
 """
 function integrator()
-    CasadiFunction(casadi.integrator())
+    return CasadiFunction(casadi.integrator())
 end
 
 """
@@ -40,5 +40,5 @@ function solve(solver::CasadiFunction; x0::Vector = error("Must provide x0."))
         val = sol[k]
         jsol[k] = to_julia(DM(Py(val)))
     end
-    jsol
+    return jsol
 end

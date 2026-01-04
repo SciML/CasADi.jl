@@ -12,7 +12,7 @@ export CasadiSymbolicObject, SX, MX, DM
 export casadi, to_julia, substitute
 export nlpsol, qpsol, solve!, solve
 export Opti, variable!, subject_to!, minimize!, parameter!, set_initial!, set_value!,
-       solver!, value, return_status
+    solver!, value, return_status
 
 include("types.jl")
 include("math.jl")
@@ -24,7 +24,7 @@ include("solvers.jl")
 
 const casadi = PythonCall.pynew()
 function __init__()
-    PythonCall.pycopy!(casadi, pyimport("casadi"))
+    return PythonCall.pycopy!(casadi, pyimport("casadi"))
 end
 
 end # module

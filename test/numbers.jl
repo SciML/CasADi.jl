@@ -1,5 +1,5 @@
 function test_numbers(::Type{T}) where {T <: CasadiSymbolicObject}
-    @testset "$( string("Conversion of numeric ", T, " to Julia                ") )" begin
+    return @testset "$(string("Conversion of numeric ", T, " to Julia                "))" begin
         x₁ = rand()
         x₂ = rand(3)
         x₃ = [rand(1, 2); Inf -Inf]
