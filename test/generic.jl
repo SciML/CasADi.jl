@@ -1,7 +1,7 @@
 J = b -> pyconvert(Bool, b)
 
 function test_generic(::Type{T}) where {T <: CasadiSymbolicObject}
-    @testset "$( string("Transform ", T, " to null, scalar, Vector, and Matrix ") )" begin
+    @testset "$(string("Transform ", T, " to null, scalar, Vector, and Matrix "))" begin
         null_symbol = T("null_symbol", 0)
         scalar = T("scalar", 1)
         V = T("V1", 3) - T("V2", 3)
@@ -18,7 +18,7 @@ function test_generic(::Type{T}) where {T <: CasadiSymbolicObject}
         @test size(M, 2) == 4
     end
 
-    @testset "$( string("Get index for ", T, "                                 ") )" begin
+    @testset "$(string("Get index for ", T, "                                 "))" begin
         s = randn()
         S = T(s)
         v = randn(4)
@@ -47,7 +47,7 @@ function test_generic(::Type{T}) where {T <: CasadiSymbolicObject}
         @test to_julia(M[1:3, :]) ≈ m[1:3, :]
     end
 
-    @testset "$( string("Set index for ", T, "                                 ") )" begin
+    @testset "$(string("Set index for ", T, "                                 "))" begin
         s = randn()
         S = T(s)
         v = randn(4)
@@ -111,7 +111,7 @@ function test_generic(::Type{T}) where {T <: CasadiSymbolicObject}
         @test to_julia(M) ≈ m
     end
 
-    @testset "$( string("Last index for ", T, "                                ") )" begin
+    @testset "$(string("Last index for ", T, "                                "))" begin
         s = randn()
         S = T(s)
         v = randn(4)
@@ -132,7 +132,7 @@ function test_generic(::Type{T}) where {T <: CasadiSymbolicObject}
         @test to_julia(M[end, end]) ≈ m[end]
     end
 
-    @testset "$( string("One, zero, ones, zeros for ", T, "                    ") )" begin
+    @testset "$(string("One, zero, ones, zeros for ", T, "                    "))" begin
         @test to_julia(one(T)) == 1.0
         @test to_julia(one(T("x", 5, 5))) == one(zeros(5, 5))
         @test_throws DimensionMismatch(
@@ -149,7 +149,7 @@ function test_generic(::Type{T}) where {T <: CasadiSymbolicObject}
         @test to_julia(zeros(T, 1, 9)) == zeros(1, 9)
     end
 
-    @testset "$( string("Size related operations for ", T, "                   ") )" begin
+    @testset "$(string("Size related operations for ", T, "                   "))" begin
         @test size(zeros(T, 3), 1) == 3
         @test size(zeros(T, 3), 2) == 1
         @test size(ones(T, 4, 5), 1) == 4
@@ -160,14 +160,14 @@ function test_generic(::Type{T}) where {T <: CasadiSymbolicObject}
         )
     end
 
-    @testset "$( string("Concatenations for ", T, "                            ") )" begin
+    @testset "$(string("Concatenations for ", T, "                            "))" begin
         M = rand(3, 3)
 
         @test to_julia(hcat([T(M); T(M)])) ≈ hcat(M, M)
         @test to_julia(vcat([T(M); T(M)])) ≈ vcat(M, M)
     end
 
-    @testset "$( string("Matrix operations for ", T, "                         ") )" begin
+    @testset "$(string("Matrix operations for ", T, "                         "))" begin
         m = rand(5, 3)
         s = rand(6, 6)
         M = T(m)
@@ -177,7 +177,7 @@ function test_generic(::Type{T}) where {T <: CasadiSymbolicObject}
         @test to_julia(repeat(M, 2, 3)) ≈ repeat(m, 2, 3)
     end
 
-    @testset "$( string("Broadcasting for ", T, "                              ") )" begin
+    @testset "$(string("Broadcasting for ", T, "                              "))" begin
         m₁ = rand(3, 6)
         M₁ = T(m₁)
         m₂ = rand(3, 6)
@@ -191,7 +191,7 @@ function test_generic(::Type{T}) where {T <: CasadiSymbolicObject}
         @test to_julia(M₁ .^ 2.1) ≈ m₁ .^ 2.1
     end
 
-    @testset "$( string("Return types for ", T, "                              ") )" begin
+    @testset "$(string("Return types for ", T, "                              "))" begin
         M = T(rand(5, 3))
         S = T(rand(6, 6))
 
@@ -202,14 +202,14 @@ function test_generic(::Type{T}) where {T <: CasadiSymbolicObject}
         @test eltype(Symmetric(Matrix(T(rand(5, 5)))) * Matrix(T(rand(5, 5)))) == T
     end
 
-    @testset "$( string("Solve linear systems with ", T, "                     ") )" begin
+    @testset "$(string("Solve linear systems with ", T, "                     "))" begin
         A = Matrix(2one(T(3, 3)))
         b = Vector(T([2, 4, 8]))
 
         @test to_julia.(A \ b) ≈ [1.0, 2.0, 4.0]
     end
 
-    @testset "Array conversion tests" begin
+    return @testset "Array conversion tests" begin
         A = rand(3, 4)
         B = SX(4, 4)
         C = Matrix(A * B)

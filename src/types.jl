@@ -21,7 +21,7 @@ _tonparr(a::AbstractArray) = Py(a).__array__()
 ## text/plain
 
 function Base.getproperty(o::C, s::Symbol) where {C <: CasadiSymbolicObject}
-    if s in fieldnames(C)
+    return if s in fieldnames(C)
         getfield(o, s)
     else
         pyconvert(Any, getproperty(o.x, s))

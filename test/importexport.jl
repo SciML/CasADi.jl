@@ -1,5 +1,5 @@
 function test_importexport(::Type{T}) where {T <: CasadiSymbolicObject}
-    @testset "$( string("Import export functions ", T, "                       ") )" begin
+    return @testset "$(string("Import export functions ", T, "                       "))" begin
         M = rand(3, 3)
         R = rand(5, 3)
 
