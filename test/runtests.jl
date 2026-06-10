@@ -1,15 +1,14 @@
 using Test
+using CasADi
+import LinearAlgebra: cross, ×, Symmetric
+import Suppressor: @capture_out
+using PythonCall
 
 const GROUP = get(ENV, "GROUP", "All")
 
 if GROUP == "QA"
     include("qa/qa.jl")
 else
-    using CasADi
-    import LinearAlgebra: cross, ×, Symmetric
-    import Suppressor: @capture_out
-    using PythonCall
-
     include("constructors.jl")
     include("generic.jl")
     include("importexport.jl")
