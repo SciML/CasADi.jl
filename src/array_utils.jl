@@ -57,35 +57,35 @@ Base.lastindex(x::CasadiSymbolicObject, j::Int) = size(x, j)
 
 ## one, zero, zeros, ones
 function Base.one(::Type{C}) where {C <: CasadiSymbolicObject}
-    return C(getproperty(casadi, Symbol(C)).eye(1))
+    return C(getproperty(casadi, nameof(C)).eye(1))
 end
 function Base.one(x::C) where {C <: CasadiSymbolicObject}
     return if size(x, 1) == size(x, 2)
-        C(getproperty(casadi, Symbol(C)).eye(size(x, 1)))
+        C(getproperty(casadi, nameof(C)).eye(size(x, 1)))
     else
         throw(DimensionMismatch("multiplicative identity defined only for square matrices"))
     end
 end
 
 function Base.zero(::Type{C}) where {C <: CasadiSymbolicObject}
-    return C(getproperty(casadi, Symbol(C)).zeros())
+    return C(getproperty(casadi, nameof(C)).zeros())
 end
 function Base.zero(x::C) where {C <: CasadiSymbolicObject}
-    return C(getproperty(casadi, Symbol(C)).zeros(size(x)))
+    return C(getproperty(casadi, nameof(C)).zeros(size(x)))
 end
 
 function Base.ones(::Type{C}, j::Integer) where {C <: CasadiSymbolicObject}
-    return C(getproperty(casadi, Symbol(C)).ones(j))
+    return C(getproperty(casadi, nameof(C)).ones(j))
 end
 function Base.ones(::Type{C}, j1::Integer, j2::Integer) where {C <: CasadiSymbolicObject}
-    return C(getproperty(casadi, Symbol(C)).ones(j1, j2))
+    return C(getproperty(casadi, nameof(C)).ones(j1, j2))
 end
 
 function Base.zeros(::Type{C}, j::Integer) where {C <: CasadiSymbolicObject}
-    return C(getproperty(casadi, Symbol(C)).zeros(j))
+    return C(getproperty(casadi, nameof(C)).zeros(j))
 end
 function Base.zeros(::Type{C}, j1::Integer, j2::Integer) where {C <: CasadiSymbolicObject}
-    return C(getproperty(casadi, Symbol(C)).zeros(j1, j2))
+    return C(getproperty(casadi, nameof(C)).zeros(j1, j2))
 end
 
 ## Size related operations

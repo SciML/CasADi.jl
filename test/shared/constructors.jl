@@ -7,13 +7,13 @@ function test_constructors(::Type{T}) where {T <: CasadiSymbolicObject}
         V = T([1; 2; 3])
         M = T([1 2; 3 4; 5 6])
 
-        @test J(casadi.is_equal(eval(Meta.parse(string("casadi.", T)))(1), scalar1, 1))
-        @test J(casadi.is_equal(eval(Meta.parse(string("casadi.", T)))(1.0), scalar2, 1))
+        @test J(casadi.is_equal(eval(Meta.parse(string("casadi.", nameof(T))))(1), scalar1, 1))
+        @test J(casadi.is_equal(eval(Meta.parse(string("casadi.", nameof(T))))(1.0), scalar2, 1))
         @test J(casadi.is_equal(scalar1, scalar2, 1))
-        @test J(casadi.is_equal(eval(Meta.parse(string("casadi.", T)))([1; 2; 3]), V, 1))
+        @test J(casadi.is_equal(eval(Meta.parse(string("casadi.", nameof(T))))([1; 2; 3]), V, 1))
         @test J(
             casadi.is_equal(
-                eval(Meta.parse(string("casadi.", T)))(
+                eval(Meta.parse(string("casadi.", nameof(T))))(
                     [
                         [1, 2], [3, 4], [5, 6],
                     ]
@@ -23,14 +23,14 @@ function test_constructors(::Type{T}) where {T <: CasadiSymbolicObject}
     end
 
     @testset "$(string("Construct variable ", T, " vector and matrix          "))" begin
-        v = eval(Meta.parse(string("casadi.", T, ".sym")))("v", 3)
+        v = eval(Meta.parse(string("casadi.", nameof(T), ".sym")))("v", 3)
         V = T("V", 3)
         v_val = rand(3)
         @test pyconvert(
             Bool, casadi.is_equal(casadi.substitute(v, v, v_val), casadi.substitute(V, V, v_val), 1)
         )
 
-        m = eval(Meta.parse(string("casadi.", T, ".sym")))("m", 2, 4)
+        m = eval(Meta.parse(string("casadi.", nameof(T), ".sym")))("m", 2, 4)
         M = T("M", 2, 4)
         m_val = Py(rand(2, 4)).__array__()
         @test J(casadi.is_equal(casadi.substitute(m, m, m_val), casadi.substitute(M, M, m_val), 1))
@@ -38,10 +38,10 @@ function test_constructors(::Type{T}) where {T <: CasadiSymbolicObject}
 
     @testset "$(string("AbstractFloat and Integer constructors for ", T, "    "))" begin
         af = [1.2; -0.0; -4.3]
-        @test J(casadi.is_equal(T(af)', casadi.transpose(eval(Meta.parse(string("casadi.", T)))(af)), 2))
+        @test J(casadi.is_equal(T(af)', casadi.transpose(eval(Meta.parse(string("casadi.", nameof(T))))(af)), 2))
 
         int = [1; 0; -2]
-        @test J(casadi.is_equal(T(int)', casadi.transpose(eval(Meta.parse(string("casadi.", T)))(int)), 2))
+        @test J(casadi.is_equal(T(int)', casadi.transpose(eval(Meta.parse(string("casadi.", nameof(T))))(int)), 2))
     end
 
     return @testset "$(string("Other constructors tests for ", T, "                  "))" begin
