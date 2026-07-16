@@ -3,7 +3,25 @@ struct CasadiFunction
 end
 
 """
-casadi.nlpsol
+    nlpsol(name::String, solver::String, var_dict::Dict, solver_options::Dict)
+
+Create a CasADi nonlinear-programming solver and return a `CasadiFunction`
+wrapper.
+
+`var_dict` is passed to `casadi.nlpsol` and typically contains entries such as
+`"x"` for decision variables and `"f"` for the objective. Nested dictionaries in
+`solver_options` are converted to Python dictionaries before calling CasADi.
+
+# Examples
+
+```julia
+using CasADi
+
+x = SX("x")
+problem = Dict("x" => x, "f" => (x - 1)^2)
+solver = nlpsol("solver", "ipopt", problem, Dict("print_time" => false))
+solve(solver; x0 = [0.0])
+```
 """
 function nlpsol(name::String, solver::String, var_dict::Dict, solver_options::Dict)
     for (k, v) in solver_options
@@ -13,7 +31,13 @@ function nlpsol(name::String, solver::String, var_dict::Dict, solver_options::Di
 end
 
 """
-casadi.qpsol
+    qpsol(name::String, solver::String, vardict::Dict, solver_options::Dict)
+
+Create a CasADi quadratic-programming solver and return a `CasadiFunction`
+wrapper.
+
+Arguments are forwarded to `casadi.qpsol`, with nested solver option
+dictionaries converted to Python dictionaries.
 """
 function qpsol(name::String, solver::String, vardict::Dict, solver_options::Dict)
     for (k, v) in solver_options
@@ -30,7 +54,21 @@ function integrator()
 end
 
 """
-Solve a casadi problem, returns a Julia dictionary.
+    solve(solver::CasadiFunction; x0::Vector)
+
+Solve a CasADi function created by [`nlpsol`](@ref) or [`qpsol`](@ref).
+
+The returned Python dictionary is converted to a Julia `Dict`; numeric CasADi
+values are converted with [`to_julia`](@ref).
+
+# Examples
+
+```julia
+x = SX("x")
+solver = nlpsol("solver", "ipopt", Dict("x" => x, "f" => (x - 1)^2), Dict())
+solution = solve(solver; x0 = [0.0])
+solution["x"]
+```
 """
 function solve(solver::CasadiFunction; x0::Vector = error("Must provide x0."))
     psol = solver.py(x0 = x0)

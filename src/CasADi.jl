@@ -22,6 +22,15 @@ include("solvers.jl")
 
 ##################################################
 
+"""
+    casadi
+
+PythonCall handle for the imported Python `casadi` module.
+
+Most users should prefer the Julia wrappers such as [`SX`](@ref), [`MX`](@ref),
+[`DM`](@ref), [`nlpsol`](@ref), and [`Opti`](@ref). Access `casadi` directly
+when a lower-level Python CasADi function is not wrapped yet.
+"""
 const casadi = PythonCall.pynew()
 function __init__()
     return PythonCall.pycopy!(casadi, pyimport("casadi"))

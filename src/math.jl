@@ -81,6 +81,25 @@ end
 Base.iszero(x::C) where {C <: CasadiSymbolicObject} = pyconvert(Bool, x.x.is_zero())
 
 ## Symbolic substitution
+"""
+    substitute(ex, vars, vals)
+
+Substitute CasADi symbolic variables `vars` in expression `ex` with values
+`vals`.
+
+`ex` can be a scalar, vector, or matrix of a single CasADi wrapper type. The
+result has the same wrapper type as `ex`.
+
+# Examples
+
+```julia
+using CasADi
+
+x = SX("x")
+expr = x^2 + 1
+substitute(expr, x, 3)
+```
+"""
 function substitute(
         ex::Union{C, AbstractVector{C}, AbstractMatrix{C}},
         vars, vals

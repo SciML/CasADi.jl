@@ -1,4 +1,6 @@
-using CasADi, Aqua, JET, Test
+using CasADi, Aqua, JET, SciMLTesting, Test
+
+run_api_docs(CasADi; rendered = true)
 
 @testset "Aqua" begin
     # ambiguities and deps_compat disabled: genuine findings tracked in
