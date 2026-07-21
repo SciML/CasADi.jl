@@ -1,6 +1,6 @@
 using CasADi, Aqua, JET, SciMLTesting, Test
 
-run_api_docs(CasADi; rendered = true)
+run_api_docs(CasADi)
 
 @testset "Aqua" begin
     # ambiguities and deps_compat disabled: genuine findings tracked in
