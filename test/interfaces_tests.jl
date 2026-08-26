@@ -29,6 +29,7 @@ end
         )
     )
     @test size(matrix) == (2, 2)
+    @test to_julia(matrix) == [1.0 2.0; 3.0 4.0]
     @test to_julia(matrix[2, 1]) == 3.0
     @test to_julia(sum(matrix)) == 10.0
     @test setindex!(matrix, x, 1, 1) === matrix

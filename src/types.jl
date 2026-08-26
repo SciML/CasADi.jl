@@ -193,8 +193,9 @@ to_julia(DM([1.0, 2.0]))
 ```
 """
 function to_julia(x::CasadiSymbolicObject)
-    mat = pyconvert(Matrix{Float64}, casadi.evalf(x).full())
-    m, n = Base.size(mat)
+    m, n = Base.size(x)
+    bytes = pyconvert(Vector{UInt8}, casadi.evalf(x).full().tobytes(order = "F"))
+    mat = copy(reshape(reinterpret(Float64, bytes), m, n))
     if m == 1 && n == 1
         return mat[1, 1]
     elseif n == 1
