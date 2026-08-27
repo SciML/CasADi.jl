@@ -6,6 +6,7 @@ Base.cos(x::T) where {T <: CasadiSymbolicObject} = T(casadi.cos(x))
 Base.sincos(x::T) where {T <: CasadiSymbolicObject} = T(sin(x)), T(cos(x))
 Base.sinc(x::T) where {T <: CasadiSymbolicObject} = T(sin(x) / x)
 Base.abs(x::T) where {T <: CasadiSymbolicObject} = T(casadi.fabs(x))
+Base.abs2(x::T) where {T <: CasadiSymbolicObject} = x^2
 Base.exp(x::T) where {T <: CasadiSymbolicObject} = T(casadi.exp(x))
 
 function Base.sum(x::T; dims = :) where {T <: CasadiSymbolicObject}

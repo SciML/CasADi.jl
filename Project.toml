@@ -8,6 +8,12 @@ LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 PrecompileTools = "aea7be01-6a6a-4083-8856-8a6e6704d82a"
 PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
 
+[weakdeps]
+SymbolicUtils = "d1185830-fcd6-423d-90d6-eec64667417b"
+
+[extensions]
+CasADiSymbolicUtilsExt = "SymbolicUtils"
+
 [compat]
 Aqua = "0.8"
 LinearAlgebra = "1"
@@ -16,6 +22,7 @@ PythonCall = "0.9.30"
 SafeTestsets = "0.0.1, 0.1"
 SciMLTesting = "2.4"
 Suppressor = "0.2"
+SymbolicUtils = "4.46"
 Test = "1"
 julia = "1.10"
 
@@ -24,7 +31,8 @@ Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
 SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 SciMLTesting = "09d9d899-5365-40a9-917a-5f67fddea283"
 Suppressor = "fd094767-a336-5f1f-9728-57cf17d0bbfb"
+SymbolicUtils = "d1185830-fcd6-423d-90d6-eec64667417b"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test", "Suppressor", "Aqua", "SafeTestsets", "SciMLTesting"]
+test = ["Test", "Suppressor", "Aqua", "SafeTestsets", "SciMLTesting", "SymbolicUtils"]

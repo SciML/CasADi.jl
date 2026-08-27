@@ -3,6 +3,7 @@ function test_mathops(::Type{T}) where {T <: CasadiSymbolicObject}
         x = randn()
 
         @test to_julia(-T(x)) ≈ -x
+        @test to_julia(abs2(T(x))) ≈ abs2(x)
     end
 
     @testset "$(string("Binary operations for ", T, "                         "))" begin
