@@ -15,6 +15,7 @@ SymbolicUtils = "d1185830-fcd6-423d-90d6-eec64667417b"
 CasADiSymbolicUtilsExt = "SymbolicUtils"
 
 [compat]
+Symbolics = "7.39.2"
 Aqua = "0.8"
 LinearAlgebra = "1"
 PrecompileTools = "1.2"
@@ -27,6 +28,7 @@ Test = "1"
 julia = "1.10"
 
 [extras]
+Symbolics = "0c5d862f-8b57-4792-8d23-62f2024744c7"
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
 SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 SciMLTesting = "09d9d899-5365-40a9-917a-5f67fddea283"
@@ -35,4 +37,4 @@ SymbolicUtils = "d1185830-fcd6-423d-90d6-eec64667417b"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test", "Suppressor", "Aqua", "SafeTestsets", "SciMLTesting", "SymbolicUtils"]
+test = ["Symbolics", "Test", "Suppressor", "Aqua", "SafeTestsets", "SciMLTesting", "SymbolicUtils"]
