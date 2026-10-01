@@ -31,10 +31,8 @@ solve(solver; x0 = [0.0])
 ```
 """
 function nlpsol(name::String, solver::String, var_dict::Dict, solver_options::Dict)
-    for (k, v) in solver_options
-        v isa Dict && (solver_options[k] = PyDict(v))
-    end
-    return CasadiFunction(casadi.nlpsol(name, solver, PyDict(var_dict), PyDict(solver_options)))
+    opts = Dict{String, Any}(k => (v isa Dict ? PyDict(v) : v) for (k, v) in solver_options)
+    return CasadiFunction(casadi.nlpsol(name, solver, PyDict(var_dict), PyDict(opts)))
 end
 
 """
@@ -65,10 +63,8 @@ solver = qpsol("solver", "qpoases", problem, Dict())
 ```
 """
 function qpsol(name::String, solver::String, var_dict::Dict, solver_options::Dict)
-    for (k, v) in solver_options
-        v isa Dict && (solver_options[k] = PyDict(v))
-    end
-    return CasadiFunction(casadi.qpsol(name, solver, PyDict(var_dict), PyDict(solver_options)))
+    opts = Dict{String, Any}(k => (v isa Dict ? PyDict(v) : v) for (k, v) in solver_options)
+    return CasadiFunction(casadi.qpsol(name, solver, PyDict(var_dict), PyDict(opts)))
 end
 
 """
