@@ -19,6 +19,18 @@ using CasADi, Test
     @test sol["x"] ≈ [0.9999999999999899, 0.9999999999999792]
 end
 
+@testset "Typed nested nlpsol options (issue #45)           " begin
+    x = SX("x")
+    problem = Dict("x" => x, "f" => (x - 1)^2)
+    options = Dict{String, Dict{String, Int}}("ipopt" => Dict("print_level" => 0))
+    solver = nlpsol("solver", "ipopt", problem, options)
+    @test solver isa CasADi.CasadiFunction
+    @test options isa Dict{String, Dict{String, Int}}
+    @test options["ipopt"] isa Dict{String, Int}
+    sol = solve(solver; x0 = [0.0])
+    @test sol["x"] ≈ 1.0
+end
+
 @testset "Test second example                               " begin
     opti = Opti()
 
