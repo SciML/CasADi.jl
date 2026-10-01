@@ -36,20 +36,36 @@ end
     @test value(sol, y) ≈ 0.6180339888825889
 end
 
-@testset "Typed nested solver! options                      " begin
+@testset "Typed flat and nested solver! options             " begin
+    # (a) Flat typed s_opts for ipopt: end-to-end solve; caller dicts unchanged.
     opti = Opti()
     x = variable!(opti)
     minimize!(opti, (x - 1)^2)
-    plugin_options = Dict("print_time" => false)
-    # Docstring-style nested options (typed): must not MethodError or mutate.
-    solver_options = Dict{String, Dict{String, Int}}("ipopt" => Dict("print_level" => 0))
-    options_before = deepcopy(solver_options)
+    plugin_options = Dict{String, Bool}("print_time" => false)
+    solver_options = Dict{String, Int}("print_level" => 0)
+    plugin_before = deepcopy(plugin_options)
+    solver_before = deepcopy(solver_options)
     solver!(opti, "ipopt", plugin_options, solver_options)
-    @test solver_options == options_before
-    @test solver_options == Dict("ipopt" => Dict("print_level" => 0))
-    @test solver_options["ipopt"] isa Dict{String, Int}
-    # Flat Opti solver options are the supported layout for actually solving.
-    solver!(opti, "ipopt", Dict("print_time" => false), Dict("print_level" => 0))
+    @test plugin_options == plugin_before
+    @test solver_options == solver_before
     sol = solve!(opti)
     @test value(sol, x) ≈ 1.0
+
+    # (b) Typed nested qpsol_options in p_opts for sqpmethod: end-to-end solve.
+    opti2 = Opti()
+    y = variable!(opti2)
+    minimize!(opti2, (y - 1)^2)
+    plugin_options2 = Dict{String, Any}(
+        "qpsol" => "qrqp",
+        "qpsol_options" => Dict{String, Bool}("print_iter" => false),
+    )
+    solver_options2 = Dict{String, Bool}()
+    plugin_before2 = deepcopy(plugin_options2)
+    solver_before2 = deepcopy(solver_options2)
+    solver!(opti2, "sqpmethod", plugin_options2, solver_options2)
+    @test plugin_options2 == plugin_before2
+    @test solver_options2 == solver_before2
+    @test plugin_options2["qpsol_options"] isa Dict{String, Bool}
+    sol2 = solve!(opti2)
+    @test value(sol2, y) ≈ 1.0
 end
