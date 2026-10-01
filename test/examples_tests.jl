@@ -23,12 +23,28 @@ end
     x = SX("x")
     problem = Dict("x" => x, "f" => (x - 1)^2)
     options = Dict{String, Dict{String, Int}}("ipopt" => Dict("print_level" => 0))
+    options_before = deepcopy(options)
     solver = nlpsol("solver", "ipopt", problem, options)
     @test solver isa CasADi.CasadiFunction
-    @test options isa Dict{String, Dict{String, Int}}
+    @test options == options_before
+    @test options == Dict("ipopt" => Dict("print_level" => 0))
     @test options["ipopt"] isa Dict{String, Int}
     sol = solve(solver; x0 = [0.0])
     @test sol["x"] ≈ 1.0
+end
+
+@testset "Typed nested qpsol options (issue #45)            " begin
+    x = SX("x")
+    qp = Dict("x" => x, "f" => (x - 1)^2)
+    options = Dict{String, Dict{String, Bool}}("osqp" => Dict("verbose" => false))
+    options_before = deepcopy(options)
+    solver = qpsol("q", "osqp", qp, options)
+    @test solver isa CasADi.CasadiFunction
+    @test options == options_before
+    @test options == Dict("osqp" => Dict("verbose" => false))
+    @test options["osqp"] isa Dict{String, Bool}
+    sol = solve(solver; x0 = [0.0])
+    @test sol["x"] ≈ 1.0 atol = 1e-5
 end
 
 @testset "Test second example                               " begin
