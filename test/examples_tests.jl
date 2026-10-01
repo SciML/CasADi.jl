@@ -44,7 +44,7 @@ end
     @test options == Dict("osqp" => Dict("verbose" => false))
     @test options["osqp"] isa Dict{String, Bool}
     sol = solve(solver; x0 = [0.0])
-    @test sol["x"] ≈ 1.0 atol = 1e-5
+    @test sol["x"] ≈ 1.0 atol = 1.0e-5
 end
 
 @testset "Test second example                               " begin
