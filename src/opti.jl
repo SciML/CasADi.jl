@@ -214,10 +214,8 @@ solver!(opti, "ipopt", Dict(), Dict("ipopt" => Dict("print_level" => 0)))
 ```
 """
 function solver!(opti::Opti, solver::String, plugin_options::Dict = Dict(), solver_options::Dict = Dict())
-    for (k, v) in solver_options
-        v isa Dict && (solver_options[k] = PyDict(v))
-    end
-    return opti.py.solver(solver, PyDict(plugin_options), PyDict(solver_options))
+    opts = Dict{String, Any}(k => (v isa Dict ? PyDict(v) : v) for (k, v) in solver_options)
+    return opti.py.solver(solver, PyDict(plugin_options), PyDict(opts))
 end
 
 """
