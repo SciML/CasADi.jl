@@ -63,3 +63,37 @@ end
     @test value(sol, x) ≈ 0.7861513776531158
     @test value(sol, y) ≈ 0.6180339888825889
 end
+
+@testset "Typed flat and nested solver! options             " begin
+    # (a) Flat typed s_opts for ipopt: end-to-end solve; caller dicts unchanged.
+    opti = Opti()
+    x = variable!(opti)
+    minimize!(opti, (x - 1)^2)
+    plugin_options = Dict{String, Bool}("print_time" => false)
+    solver_options = Dict{String, Int}("print_level" => 0)
+    plugin_before = deepcopy(plugin_options)
+    solver_before = deepcopy(solver_options)
+    solver!(opti, "ipopt", plugin_options, solver_options)
+    @test plugin_options == plugin_before
+    @test solver_options == solver_before
+    sol = solve!(opti)
+    @test value(sol, x) ≈ 1.0
+
+    # (b) Typed nested qpsol_options in p_opts for sqpmethod: end-to-end solve.
+    opti2 = Opti()
+    y = variable!(opti2)
+    minimize!(opti2, (y - 1)^2)
+    plugin_options2 = Dict{String, Any}(
+        "qpsol" => "qrqp",
+        "qpsol_options" => Dict{String, Bool}("print_iter" => false),
+    )
+    solver_options2 = Dict{String, Bool}()
+    plugin_before2 = deepcopy(plugin_options2)
+    solver_before2 = deepcopy(solver_options2)
+    solver!(opti2, "sqpmethod", plugin_options2, solver_options2)
+    @test plugin_options2 == plugin_before2
+    @test solver_options2 == solver_before2
+    @test plugin_options2["qpsol_options"] isa Dict{String, Bool}
+    sol2 = solve!(opti2)
+    @test value(sol2, y) ≈ 1.0
+end

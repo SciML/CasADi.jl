@@ -194,15 +194,17 @@ end
 
 Configure the CasADi solver plugin used by `opti`.
 
-Nested dictionaries in `solver_options` are converted to Python dictionaries
-before calling CasADi.
+Nested dictionaries in `plugin_options` (for example `"qpsol_options"` under
+`"sqpmethod"`) are converted to Python dictionaries before calling CasADi.
+`solver_options` are plugin-specific and for solvers such as `"ipopt"` are flat
+key/value pairs (CasADi places them under `opts[solver]` internally).
 
 # Arguments
 
 - `opti`: optimization problem to configure.
 - `solver`: installed CasADi solver plugin name.
-- `plugin_options`: CasADi-level solver options.
-- `solver_options`: plugin-specific options.
+- `plugin_options`: CasADi-level solver options (may contain nested Dict values).
+- `solver_options`: plugin-specific options (flat for `"ipopt"`).
 
 # Examples
 
@@ -210,14 +212,13 @@ before calling CasADi.
 using CasADi
 
 opti = Opti()
-solver!(opti, "ipopt", Dict(), Dict("ipopt" => Dict("print_level" => 0)))
+solver!(opti, "ipopt", Dict(), Dict("print_level" => 0))
 ```
 """
 function solver!(opti::Opti, solver::String, plugin_options::Dict = Dict(), solver_options::Dict = Dict())
-    for (k, v) in solver_options
-        v isa Dict && (solver_options[k] = PyDict(v))
-    end
-    return opti.py.solver(solver, PyDict(plugin_options), PyDict(solver_options))
+    p_opts = Dict{String, Any}(k => (v isa Dict ? PyDict(v) : v) for (k, v) in plugin_options)
+    s_opts = Dict{String, Any}(k => (v isa Dict ? PyDict(v) : v) for (k, v) in solver_options)
+    return opti.py.solver(solver, PyDict(p_opts), PyDict(s_opts))
 end
 
 """
